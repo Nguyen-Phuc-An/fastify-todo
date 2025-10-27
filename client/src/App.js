@@ -1,7 +1,7 @@
 import { ToastContainer, Bounce } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { Homepage, Login, Register } from "./pages/index";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { Homepage, Login, Register, MyTodos } from "./pages/index";
 import { UserLayout } from "./layouts/index";
 import {path} from './constant/path'
 import { useEffect } from 'react'
@@ -9,7 +9,6 @@ import { apiGetCurrentUser } from "./api/user";
 
 function App() {
     const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
-    const location = useLocation();
 
     // Gọi apiGetCurrentUser khi isLoggedIn là true
     useEffect(() => {
@@ -42,6 +41,7 @@ function App() {
                     <Route path="*" element={<Navigate to={path.HOME} replace />} />
                     <Route path={path.REGISTER} element={<Register/>} />
                     <Route path={path.LOGIN} element={<Login/>} />
+                    <Route path={path.TASK} element={<MyTodos />} />
                 </Route>
             </Routes> 
 
