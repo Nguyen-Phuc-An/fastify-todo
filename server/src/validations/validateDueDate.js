@@ -1,8 +1,7 @@
-// Hàm kiểm tra dueDate phải lớn hơn hoặc bằng thời gian hiện tại
 export const validateDueDate = (dueDate) => {
-    const currentDate = new Date(); // Thời gian hiện tại
+    const currentDate = new Date();
     if (!dueDate || dueDate === "") {
-        return { valid: true, msg: "" }; // Cho phép rỗng (null)
+        return { valid: true, msg: "" }; // Cho phép rỗng
     }
 
     const dueDateObj = new Date(dueDate);
@@ -10,8 +9,12 @@ export const validateDueDate = (dueDate) => {
         return { valid: false, msg: "Ngày đáo hạn phải là ngày hợp lệ" };
     }
 
-    if (dueDateObj < currentDate) {
-        return { valid: false, msg: "Ngày đáo hạn phải lớn hơn hoặc bằng thời gian hiện tại" };
+    // Chỉ so sánh phần ngày, bỏ qua giờ
+    const currentYMD = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+    const dueYMD = new Date(dueDateObj.getFullYear(), dueDateObj.getMonth(), dueDateObj.getDate());
+
+    if (dueYMD < currentYMD) {
+        return { valid: false, msg: "Ngày đáo hạn phải lớn hơn hoặc bằng ngày hiện tại" };
     }
 
     return { valid: true, msg: "" };

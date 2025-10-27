@@ -25,7 +25,7 @@ export const getTodosByUserService = async (userId) => {
     try {
         const todos = await db.Todo.findAll({
             where: { userId },
-            order: [['createdAt', 'DESC']]
+            order: [['createdAt', 'ASC']]
         });
 
         return {
