@@ -1,8 +1,9 @@
 import { ToastContainer, Bounce } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Homepage, Login, Register, MyTodos } from "./pages/index";
-import { UserLayout } from "./layouts/index";
+import { Homepage, Login, Register, MyTodos, UserManager } from "./pages/index";
+import { RequireAuth } from "./components/index";
+import { UserLayout, AdminLayout } from "./layouts/index";
 import {path} from './constant/path'
 import { useEffect } from 'react'
 import { apiGetCurrentUser } from "./api/user";
@@ -43,6 +44,13 @@ function App() {
                     <Route path={path.LOGIN} element={<Login/>} />
                     <Route path={path.TASK} element={<MyTodos />} />
                 </Route>
+
+                <Route element={<RequireAuth requireAdmin='1' />}>
+                    <Route path={path.ADMIN} element={<AdminLayout />}>
+                        <Route path={path.USER_MANAGER} element={<UserManager/>} />
+                    </Route>
+                </Route>
+
             </Routes> 
 
             <ToastContainer

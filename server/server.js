@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import formbody from '@fastify/formbody';
 import indexRoutes from './src/routes/index.routes.js';
 import connectDatabase from './src/config/connectDatabase.js';
-
+import { initAdminAccount } from './src/utils/initAdminAccount.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,7 +30,8 @@ const port = process.env.PORT || 5000;
 const startServer = async () => {
     try {
         await connectDatabase();
-        await fastify.listen({ port });
+        await initAdminAccount();
+        await fastify.listen({ port, host: '0.0.0.0' });
         console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
     } catch (err) {
         fastify.log.error(err);

@@ -17,3 +17,20 @@ export const getCurrentUserService  = async (userId) => {
         throw error
     }
 }
+
+export const getAllUsersService  = async () => {
+    try {
+        const response = await db.User.findAndCountAll({
+            raw: true,
+            nested: true,
+        });
+
+        return {
+            err: response ? 0 : 1,
+            msg: response ? 'Get all users successfully!' : 'Get all users failed!',
+            response
+        }
+    } catch (error) {
+        throw error
+    }
+}

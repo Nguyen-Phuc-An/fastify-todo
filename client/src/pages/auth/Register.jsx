@@ -76,7 +76,7 @@ const Register = () => {
                     </button>
                 </div>
                 <p className="mt-4 text-center text-[#4A5568]">
-                    Đã có tài khoản? <Link to="/login" className="text-[#4B6CB7] hover:underline">Đăng nhập</Link>
+                    Đã có tài khoản? <Link to={path.LOGIN} className="text-[#4B6CB7] hover:underline">Đăng nhập</Link>
                 </p>
             </form>
                 

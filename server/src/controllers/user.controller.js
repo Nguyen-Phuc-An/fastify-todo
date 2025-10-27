@@ -12,3 +12,15 @@ export const getMeController = async (request, reply) => {
         });
     }
 };
+
+export const getAllUsersController = async (request, reply) => {
+    try {
+        const result = await service.getAllUsersService();
+        return reply.send(result);
+    } catch (error) {
+        return reply.status(500).send({
+            err: -1,
+            msg: 'Failed at get all users controller: ' + error.message
+        });
+    }
+};

@@ -62,7 +62,7 @@ const Sidebar = ({ isOpen, toggle }) => {
                 ) : (
                     <>
                         <NavLink
-                            to="/login"
+                            to={path.LOGIN}
                             className={({ isActive }) => (isActive ? activeClass : normalClass)}
                         >
                             {isOpen ? "Đăng nhập" : "🔑"}

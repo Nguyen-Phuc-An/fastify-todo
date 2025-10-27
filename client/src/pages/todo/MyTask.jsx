@@ -1,13 +1,28 @@
 import { useEffect, useState } from "react";
 import { apiGetAllTodos, apiAddTodo, apiUpdateTodo, apiDeleteTodo } from "../../api/todo";
 import {TodoForm, TodoList, TodoModal} from '../../components/index'
-
+import { useNavigate } from "react-router-dom";
 const MyTodos = () => {
+    const navigate = useNavigate();
     const [todos, setTodos] = useState([]);
     const [filter, setFilter] = useState(false);
     const [newTodo, setNewTodo] = useState({ title: "", description: "", dueDate: "" });
     const [editingTodo, setEditingTodo] = useState(null);
     const [selectedTodo, setSelectedTodo] = useState(null);
+
+     const handleAuthError = (err) => {
+        const msg = err?.response?.data?.msg || err?.response?.data?.message || err?.message || "";
+        if (typeof msg === "string" && msg.toLowerCase().includes("token")) {
+            // clear auth state and redirect to login
+            localStorage.setItem('isLoggedIn', 'false');
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            alert("Phiên đăng nhập hết hạn hoặc token không hợp lệ. Vui lòng đăng nhập lại.");
+            //navigate('/login');
+            return true;
+        }
+        return false;
+    };
 
     // Lấy danh sách todo
     const fetchTodos = async () => {
@@ -29,7 +44,9 @@ const MyTodos = () => {
             setNewTodo({ title: "", description: "", dueDate: "" });
             fetchTodos();
         } catch (err) {
-            alert(err.response?.data?.msg || "Có lỗi xảy ra khi thêm công việc!");
+            if (handleAuthError(err)) return;
+            const message = err.response?.data?.msg;
+            alert(message || "Có lỗi xảy ra khi thêm công việc!");
         }
     };
 

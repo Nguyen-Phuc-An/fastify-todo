@@ -16,13 +16,17 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
+        console.log("1️⃣ Bắt đầu handleSubmit");
         try {
             const response = await apiLogin(formData);
+            console.log("2️⃣ Sau khi gọi apiLogin:", response);
             if (response?.data?.err === 0) {
                 alert("Đăng nhập thành công!");
-                navigate(path.HOME)
+                const isAdmin = response.decodedToken?.isAdmin === 1;
+                navigate(isAdmin ? `${path.ADMIN}/${path.USER_MANAGER}` : path.HOME);
             }
         } catch (error) {
+            console.error("❌ Lỗi khi đăng nhập:", error);
             setError(error.response?.data?.msg || "Đã xảy ra lỗi khi đăng nhập.");
         }
     };
@@ -65,7 +69,7 @@ const Login = () => {
                     </button>
                 </div>
                 <p className="mt-4 text-center text-[#4A5568]">
-                    Bạn chưa có tài khoản? <Link to="/login" className="text-[#4B6CB7] hover:underline">Đăng ký</Link>
+                    Bạn chưa có tài khoản? <Link to={path.REGISTER} className="text-[#4B6CB7] hover:underline">Đăng ký</Link>
                 </p>
             </form>
                 
