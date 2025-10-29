@@ -3,7 +3,7 @@ FROM node:22 AS dev
 WORKDIR /usr/src/app
 
 # Cài netcat để dùng nc
-RUN apt-get update && apt-get install -y netcat-openbsd
+RUN apt-get update && apt-get install -y default-mysql-client
 
 COPY package*.json ./
 RUN npm install
