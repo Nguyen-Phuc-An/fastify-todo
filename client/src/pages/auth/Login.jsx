@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { apiLogin } from "../../api/auth"; 
 import { path } from "../../constant/path";
+import { parseFastifyError } from "../../utils/parseFastifyError";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -26,8 +27,11 @@ const Login = () => {
                 navigate(isAdmin ? `${path.ADMIN}/${path.USER_MANAGER}` : path.HOME);
             }
         } catch (error) {
-            console.error("❌ Lỗi khi đăng nhập:", error);
-            setError(error.response?.data?.msg || "Đã xảy ra lỗi khi đăng nhập.");
+            if(error?.response?.data?.err === 1) alert (error?.response?.data?.msg)
+            else {
+                console.error("❌ Lỗi khi đăng nhập:", error);
+                setError(parseFastifyError(error.response?.data?.message) || "Đã xảy ra lỗi khi đăng nhập.");
+            }
         }
     };
 

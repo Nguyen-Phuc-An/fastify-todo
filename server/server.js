@@ -13,7 +13,7 @@ const __dirname = path.dirname(__filename);
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-const fastify = Fastify({ logger: false });
+const fastify = Fastify({ logger: true });
 
 await fastify.register(formbody);
 
@@ -31,7 +31,13 @@ const startServer = async () => {
     try {
         await connectDatabase();
         await initAdminAccount();
-        await fastify.listen({ port, host: '0.0.0.0' });
+        fastify.listen({ port, host: '0.0.0.0' }, (err, address) => {
+            if (err) {
+                fastify.log.error(err);
+                process.exit(1);
+            }
+            console.log(`Server đang chạy tại ${address}`);
+        });
         console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
     } catch (err) {
         fastify.log.error(err);

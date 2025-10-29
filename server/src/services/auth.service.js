@@ -34,7 +34,7 @@ export const registerService = async ({ username, email, password, isAdmin = fal
             { expiresIn: '2d' }
         );
 
-        return { err: 0, msg: 'Đăng ký tài khoản thành công!', token };
+        return { err: 0, msg: 'Đăng ký tài khoản thành công!'};
 
     } catch (error) {
         throw error;

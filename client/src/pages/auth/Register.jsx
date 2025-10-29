@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { apiRegister } from "../../api/auth"; 
 import { path } from "../../constant/path";
+import { parseFastifyError } from "../../utils/parseFastifyError";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -18,12 +19,17 @@ const Register = () => {
         setError("");
         try {
             const response = await apiRegister(formData);
+            console.log('res:', response)
             if (response?.data?.err === 0) {
                 alert("Đăng ký thành công! Vui lòng đăng nhập.");
                 navigate(path.LOGIN)
             }
         } catch (error) {
-            setError(error.response?.data?.msg || "Đã xảy ra lỗi khi đăng ký.");
+            if(error?.response?.data?.err === 1) alert (error?.response?.data?.msg)
+            else{
+            const msg = error.response?.data?.message || "Đã xảy ra lỗi khi đăng ký";
+            //console.log('msg: ',error)
+            setError(parseFastifyError(msg));} 
         }
     };
 
@@ -31,7 +37,7 @@ const Register = () => {
         <div className="flex flex-col items-center justify-center bg-contentBg w-full h-full">
             <form onSubmit={handleSubmit} className="bg-white shadow-[0_0_30px_10px_rgba(34,197,94,0.4)] rounded-md px-16 py-8 my-12">
                 <h2 className="text-3xl font-bold mb-6 text-[#2D3748] text-center">Đăng ký</h2>
-                {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+                {error && <p className="text-red-500 text-center mb-4 italic">{error}</p>}
                 <div className="space-y-2">
                     <div>
                         <label className="block text-[#4A5568] mb-1">Tên đăng nhập<span className="text-red-500"> *</span></label>
